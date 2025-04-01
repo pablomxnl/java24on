@@ -2,9 +2,161 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hallo</title>
+    <title>Java 24 on Fly . io</title>
+    <link rel="stylesheet" href="/webjars/picocss__pico/css/pico.min.css" />
+    <link rel="stylesheet" href="/webjars/picocss__pico/css/pico.colors.min.css" />
+    <link rel="stylesheet" href="/webjars/fortawesome__fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="/webjars/fortawesome__fontawesome-free/css/v4-shims.min.css" />
+    <script src="/webjars/htmx.org/dist/htmx.min.js"></script>
+    <style>
+        :root {
+    --pico-font-family-sans-serif: Inter, system-ui, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, Helvetica, Arial, "Helvetica Neue", sans-serif, var(--pico-font-family-emoji);
+    --pico-font-size: 87.5%;
+    /* Original: 100% */
+    --pico-line-height: 1.25;
+    /* Original: 1.5 */
+    --pico-form-element-spacing-vertical: 0.5rem;
+    /* Original: 1rem */
+    --pico-form-element-spacing-horizontal: 1.0rem;
+    /* Original: 1.25rem */
+    --pico-border-radius: 0.375rem;
+    /* Original: 0.25rem */
+}
+
+@media (min-width: 576px) {
+    :root {
+        --pico-font-size: 87.5%;
+        /* Original: 106.25% */
+    }
+}
+
+@media (min-width: 768px) {
+          body > footer,
+          body > header,
+          body > main {
+            padding: 0;
+          },
+          section {
+            --block-spacing-vertical: calc(var(--spacing) * 2);
+          }
+    :root {
+        --pico-font-size: 87.5%;
+        /* Original: 112.5% */
+    }
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --pico-font-size: 87.5%;
+        /* Original: 118.75% */
+    }
+}
+
+@media (min-width: 1280px) {
+    :root {
+        --pico-font-size: 87.5%;
+        /* Original: 125% */
+    }
+}
+
+@media (min-width: 1536px) {
+    :root {
+        --pico-font-size: 87.5%;
+        /* Original: 131.25% */
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    --pico-font-weight: 600;
+    /* Original: 700 */
+}
+
+article {
+    border: 1px solid var(--pico-muted-border-color);
+    /* Original doesn't have a border */
+    border-radius: calc(var(--pico-border-radius) * 2);
+    /* Original: var(--pico-border-radius) */
+}
+
+article>footer {
+    border-radius: calc(var(--pico-border-radius) * 2);
+    /* Original: var(--pico-border-radius) */
+}
+
+.tableLayout {
+    table-layout: fixed;
+    width: 100%;
+}
+    </style>
 </head>
 <body>
-Hallo Quarkus!
+<header class="container-fluid">
+    <nav>
+        <ul>
+            <li><a href="#"><i class="fa-solid fa-house" aria-hidden="true"></i> Home</a> </li>
+            <li>Simple app built with <a href="https://java.com" target="_blank">Java <i class="fa-brands fa-java" aria-hidden="true"></i></a>
+                <a href="https://quarkus.io" target="_blank"><img src="/static/images/quarkus.webp" width="22"> Quarkus</a>
+                <a target="_blank" href="https://htmx.org/" class="contrast">
+                    &lt;<span class="pico-color-azure-400">/</span>&gt; htm<span class="pico-color-azure-400">x</span></a>
+                and <a target="_blank" href="https://picocss.com/">✨ Pico</a>
+                deployed in
+                <a target="_blank" href="https://fly.io">
+                    <i class="fa-brands fa-fly" aria-hidden="true"></i>Fly.io</a></li>
+        </ul>
+        <ul>
+            <li><a href="#" data-theme-switcher="light"><i class="fa-regular fa-sun" aria-hidden="true"></i> Light</a></li>
+            <li><a href="#" data-theme-switcher="dark"><i class="fa-regular fa-moon" aria-hidden="true"></i> Dark</a></li>
+        </ul>
+    </nav>
+</header>
+<main class="container-fluid">
+    <section>
+        <div class="grid">
+            <div>
+                <article>
+                    <header>Options</header>
+                    <details open>
+                        <summary>Run Time Info</summary>
+                        <p><button hx-get="/api/runtime" hx-target="#content">Load Runtime Info</button></p>
+                    </details>
+                    <hr />
+                    <details open>
+                        <summary>Load Sample Qute page</summary>
+                        <fieldset role="group">
+                            <input type="text" name="name" placeholder="Enter your name?" aria-label="Name">
+                            <button hx-get="/some-page" hx-include="[name='name']" hx-target="#content">Submit</button>
+                        </fieldset>
+                    </details>
+                    <hr />
+                    <details open>
+                        <summary>Countries Visited</summary>
+                        <fieldset role="group">
+                            <input type="number" name="countries_visited" placeholder="How many countries have you visited?" aria-label="Number of languages">
+                            <button hx-get="/travelAdjective" hx-target="#content" hx-include="[name='countries_visited']">Submit</button>
+                        </fieldset>
+                    </details>
+                </article>
+            </div>
+            <div>
+                <article style="text-align:center">
+                    <header>
+                        <a href="https://yeahwellyouknowthatsjustlikeuhyouropinionman.com/">
+                            Blog post
+                        </a>
+                    </header>
+                    <main id="content" style="height: 280px;">
+                        <img src="/static/images/theater-dalle.webp" width="250"/>
+                    </main>
+                </article>
+            </div>
+        </div>
+    </section>
+</main>
+<script src="/static/theme-switcher.js"></script>
 </body>
 </html>
