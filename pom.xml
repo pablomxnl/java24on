@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.thedude</groupId>
     <artifactId>java24on</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>A Java 24 web app</description>
 
     <properties>
