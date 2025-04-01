@@ -8,10 +8,15 @@ env:
   QUARKUS_CONTAINER_IMAGE_ADDITIONAL_TAGS: 'latest'
   QUARKUS_CONTAINER_IMAGE_USERNAME: '${{ vars.QUARKUS_CONTAINER_IMAGE_USERNAME }}'
   QUARKUS_CONTAINER_IMAGE_PASSWORD: '${{ secrets.QUARKUS_CONTAINER_IMAGE_PASSWORD }}'
+  QUARKUS_CONTAINER_IMAGE_NAME: 'java24on'
+  QUARKUS_CONTAINER_IMAGE_REGISTRY: 'registry.fly.io'
+  QUARKUS_HTTP_PROXY_TRUSTED-PROXIES: '0:0:0:0:0:0:0:1,172.16.0.0/16'
 jobs:
   build:
     name: quarkus build
     runs-on: ubuntu-latest
+    outputs:
+      fly_image: ${{ steps.mavenbuild.outputs.FLY_IMAGE }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
@@ -29,4 +34,21 @@ jobs:
       - name: Build with maven
         id: mavenbuild
         run: |
+          MVN_VERSION=$(mvn -B -q -Dexec.executable=echo -Dexec.args='${project.version}' exec:exec)
+          IMAGE_PREFIX="$QUARKUS_CONTAINER_IMAGE_REGISTRY/$QUARKUS_CONTAINER_IMAGE_NAME"
+          echo "FLY_IMAGE=$IMAGE_PREFIX:$MVN_VERSION" >> $GITHUB_OUTPUT
           mvn -B -q package
+
+  deploy:
+    name: deploy-fly
+    needs: [build]
+    runs-on: ubuntu-latest
+    concurrency: deploy-group
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: |
+          flyctl deploy --image $FLY_IMAGE --ha=false
+        env:
+          FLY_API_TOKEN: ${{ secrets.QUARKUS_CONTAINER_IMAGE_PASSWORD }}
+          FLY_IMAGE: ${{needs.build.outputs.fly_image}}
