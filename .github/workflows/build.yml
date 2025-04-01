@@ -3,7 +3,11 @@ on:
   push:
     branches:
       - main
-
+env:
+  QUARKUS_CONTAINER_IMAGE_PUSH: 'true'
+  QUARKUS_CONTAINER_IMAGE_ADDITIONAL_TAGS: 'latest'
+  QUARKUS_CONTAINER_IMAGE_USERNAME: '${{ vars.QUARKUS_CONTAINER_IMAGE_USERNAME }}'
+  QUARKUS_CONTAINER_IMAGE_PASSWORD: '${{ secrets.QUARKUS_CONTAINER_IMAGE_PASSWORD }}'
 jobs:
   build:
     name: quarkus build
@@ -25,4 +29,4 @@ jobs:
       - name: Build with maven
         id: mavenbuild
         run: |
-          mvn package
+          mvn -B -q package
